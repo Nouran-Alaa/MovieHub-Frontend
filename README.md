@@ -179,8 +179,6 @@ Once the backend is running, access the API documentation:
 #### Authentication
 - `POST /api/auth/register/` - Register new user
 - `POST /api/auth/login/` - Login user
-- `POST /api/auth/token/refresh/` - Refresh JWT token
-- `GET /api/auth/profile/` - Get user profile
 
 #### Movies
 - `GET /api/movies/` - List all movies (with filters)
@@ -259,7 +257,7 @@ curl -X POST http://localhost:8000/api/movies/ \
 
 ## 📦 Deployment
 
-### Backend Deployment (Example: Railway/Render)
+### Backend Deployment
 
 1. **Update settings for production**
 ```python
@@ -268,7 +266,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['your-domain.com']
 ```
 
-2. **Add Procfile** (for platforms like Heroku/Railway)
+2. **Add Procfile**
 ```
 web: gunicorn backend.wsgi
 ```
@@ -280,7 +278,7 @@ web: gunicorn backend.wsgi
 - CORS_ALLOWED_ORIGINS
 - OMDB_API_KEY
 
-### Frontend Deployment (Example: Vercel/Netlify)
+### Frontend Deployment
 
 1. **Update .env for production**
 ```env
