@@ -28,16 +28,6 @@ A full-stack web application for managing your personal movie watchlist with a s
 - CORS enabled for separate frontend/backend deployment
 - Custom dark theme with Netflix-inspired design
 
-## 🎨 Design Theme
-
-The application features a **dark cinema theme** with:
-- Dark gray/black background (#121212, #1f2937)
-- Red accent color (#dc2626) for CTAs and highlights
-- Netflix-style background for auth pages
-- Smooth hover animations and transitions
-- Card-based layout for movies
-- Modern, clean UI with excellent contrast
-
 ## 🏗️ Project Structure
 
 ```
@@ -321,14 +311,6 @@ npm run build
 
 **Build Errors:**
 - Clear node_modules: `rm -rf node_modules && npm install`
-
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 👨‍💻 Author
-
-Your Name - [Your GitHub Profile]
 
 ## 🙏 Acknowledgments
 
