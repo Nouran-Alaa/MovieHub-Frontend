@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api"; // this is how Vite accesses environment variables
 
 const api = axios.create({
   baseURL: API_URL,
@@ -12,6 +12,8 @@ const api = axios.create({
 // Request interceptor to add token
 api.interceptors.request.use(
   (config) => {
+    // when you send a request, Axios internally builds a config object
+    // you get this config object before the request is actually sent, so you can modify it
     const token = localStorage.getItem("access_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -36,12 +38,14 @@ api.interceptors.response.use(
           refresh: refreshToken,
         });
 
-        const { access } = response.data;
+        const { access } = response.data; // Extracts the new access token from the backend’s response JSON
         localStorage.setItem("access_token", access);
 
-        originalRequest.headers.Authorization = `Bearer ${access}`;
-        return api(originalRequest);
+        originalRequest.headers.Authorization = `Bearer ${access}`; // Updates the failed request’s header with the new token
+        return api(originalRequest); // It returns a Promise, the same format as any Axios request
+        // Retries the same API request again, now with a valid access token
       } catch (refreshError) {
+        // If refreshing the token fails
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         window.location.href = "/login";
@@ -49,7 +53,7 @@ api.interceptors.response.use(
       }
     }
 
-    return Promise.reject(error);
+    return Promise.reject(error); // passing the error to be caught elsewhere if needed
   }
 );
 
@@ -66,7 +70,7 @@ export const moviesAPI = {
     if (params.status) queryParams.append("status", params.status);
     if (params.genre) queryParams.append("genre", params.genre);
     if (params.search) queryParams.append("search", params.search);
-    return api.get(`/movies/?${queryParams.toString()}`);
+    return api.get(`/movies/?${queryParams.toString()}`); //builds query strings dynamically
   },
 
   getOne: (id) => api.get(`/movies/${id}/`),

@@ -36,9 +36,6 @@ function MovieForm({ movie, onClose }) {
       if (movie) {
         await moviesAPI.update(movie.id, formData);
         toast.success("Movie updated successfully");
-      } else {
-        await moviesAPI.create(formData);
-        toast.success("Movie added successfully");
       }
       onClose();
     } catch (error) {
@@ -63,9 +60,7 @@ function MovieForm({ movie, onClose }) {
         className="bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}>
         <div className="flex justify-between items-center p-6 sticky border-gray-300 border-b-2 top-0 bg-gray-800">
-          <h2 className="text-2xl font-bold text-gray-300">
-            {movie ? "Edit Movie" : "Add New Movie"}
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-300">Edit Movie</h2>
           <button
             className="text-3xl text-gray-300 hover:text-gray-100 transition-colors leading-none"
             onClick={onClose}>
@@ -208,7 +203,7 @@ function MovieForm({ movie, onClose }) {
                 type="submit"
                 disabled={loading}
                 className="flex-1 px-6 py-3 bg-gradient-to-r from-red-500 to-red-800 text-white rounded-lg font-semibold hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/40 transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0">
-                {loading ? "Saving..." : movie ? "Update" : "Add Movie"}
+                {loading ? "Saving..." : "Update"}
               </button>
             </div>
           </form>

@@ -32,11 +32,6 @@ function Movies() {
     initialize();
   }, []); // Run only once on mount
 
-  // Fetch user's saved movies when filters change
-  useEffect(() => {
-    fetchUserMovies();
-  }, [filters.status, filters.genre]);
-
   // Debounced search for OMDb
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
@@ -52,10 +47,7 @@ function Movies() {
   // fetch movies user added
   const fetchUserMovies = async () => {
     try {
-      const response = await moviesAPI.getAll({
-        status: filters.status,
-        genre: filters.genre,
-      });
+      const response = await moviesAPI.getAll({});
       setUserMovies(response.data.results || response.data);
     } catch (error) {
       console.error("Failed to load user movies:", error);
@@ -177,17 +169,24 @@ function Movies() {
     }
   };
 
-  // Display Movies
+  // Display Movies with client-side filtering
   const getDisplayMovies = () => {
     let movies = viewMode === "saved" ? userMovies : allMovies;
 
-    // Apply status filter for watchlist view
-    if (viewMode === "saved" && filters.status) {
+    // Apply search filter
+    if (filters.search) {
+      movies = movies.filter((m) =>
+        m.title.toLowerCase().includes(filters.search.toLowerCase())
+      );
+    }
+
+    // Apply status filter (only for saved movies that have status)
+    if (filters.status) {
       movies = movies.filter((m) => m.status === filters.status);
     }
 
-    // Apply genre filter for watchlist view
-    if (viewMode === "saved" && filters.genre) {
+    // Apply genre filter
+    if (filters.genre) {
       movies = movies.filter(
         (m) => m.genre && m.genre.toLowerCase() === filters.genre.toLowerCase()
       );
@@ -349,6 +348,7 @@ function Movies() {
                 </button>
 
                 {[...Array(totalPages)].map((_, index) => (
+                  // Array(totalPages) → creates an empty array with totalPages slots (e.g., Array(5) = [ , , , , ])
                   <button
                     key={index}
                     onClick={() => handlePageChange(index + 1)}
